@@ -1,5 +1,7 @@
 package com.interstellar.odiro.place.controller;
 
+import com.interstellar.odiro.place.controller.dto.PlaceSearchResponse;
+import com.interstellar.odiro.place.mapper.PlaceMapper;
 import com.interstellar.odiro.place.service.PlaceSearchService;
 import com.interstellar.odiro.place.service.dto.MergedPlaceDTO;
 import lombok.RequiredArgsConstructor;
@@ -18,9 +20,11 @@ import java.util.List;
 public class PlaceController {
 
     private final PlaceSearchService placeSearchService;
+    private final PlaceMapper placeMapper;
 
     @GetMapping
-    public List<MergedPlaceDTO> getPlaces(@RequestParam String keyword) {
-        return placeSearchService.searchPlacesParallel(keyword);
+    public List<PlaceSearchResponse> getPlaces(@RequestParam String keyword) {
+        List<MergedPlaceDTO> placeList = placeSearchService.searchPlacesParallel(keyword);
+        return placeMapper.toPlaceSearchResponseList(placeList);
     }
 }
